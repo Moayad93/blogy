@@ -1,10 +1,10 @@
 /****************************************************************
  * #	Action 	URL      	 HTTP Verb	mongoose method             *
- * 1	Index  	/logs    	 GET      	Log.find({})                *
- * 2	Show   	/logs/:id	 GET      	Log.findById(req.params.id) *
- * 3	Create 	/logs    	 POST     	Log.create(req.body)        *
- * 4	Update 	/logs/:id	 PUT      	Log.findByIdAndUpdate()     *
- * 5	Destroy	/logs    	 DELETE   	Log.findByIdAndRemove()     *
+ * 1	Index  	/xxxx    	 GET      	Xxx.find({})                *
+ * 2	Show   	/xxxx/:id	 GET      	Xxx.findById(req.params.id) *
+ * 3	Create 	/xxxx    	 POST     	Xxx.create(req.body)        *
+ * 4	Update 	/xxxx/:id	 PUT      	Xxx.findByIdAndUpdate()     *
+ * 5	Destroy	/xxxx    	 DELETE   	Xxx.findByIdAndRemove()     *
  ****************************************************************/
 
 /****************************
