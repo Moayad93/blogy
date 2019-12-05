@@ -19,7 +19,6 @@ const
  * URI        : /api/articles    *
  * Description: Get All Articles *
  *********************************/
-
 router.get("/api/articles", (request, response) => {
   // Return all Articles as an Array
   Article.find()
@@ -45,6 +44,21 @@ router.get("/api/articles", (request, response) => {
  * URI        : /api/articles        *
  * Description: Create a new Article *
  *************************************/
+router.post("/api/articles", (request, response) => {
+  const
+    article = request.body.article;
+
+  Article.create(article)
+    // On a successful "create" action, respond with 201
+    // HTTP status and the content of the new article
+    .then(newArticle => {
+      response.status(201).json({ article: newArticle });
+    })
+    // Catch any Errors that might occur
+    .catch(error => {
+      response.status(500).json({ error: error });
+    });
+})
 
 /********************************************************
  * Action     : UPDATE                                  *
