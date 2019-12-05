@@ -7,7 +7,7 @@ const
 const
   app = express();
 
-// Define PORT for the API to run on. Use NodeJS environment
+// Define a PORT for the API to run on. Use NodeJS environment
 const
   port = process.env.PORT || 5000;
 
