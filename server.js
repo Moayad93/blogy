@@ -1,3 +1,6 @@
+/****************************
+ * Set up and Configuration *
+ ****************************/
 // Require necessary NPM Packages
 const
   express  = require("express"),
