@@ -13,16 +13,12 @@ const
 const
   router = express.Router();
 
-// /*********************************
-//  * Action     : INDEX            *
-//  * Method     : GET              *
-//  * URI        : /api/articles    *
-//  * Description: Get All Articles *
-//  *********************************/
-
-// router.get("/api/articles", (request, response) => {
-//   response.status(200).json({ message: "Get All Articles" })
-// })
+/*********************************
+ * Action     : INDEX            *
+ * Method     : GET              *
+ * URI        : /api/articles    *
+ * Description: Get All Articles *
+ *********************************/
 
 router.get("/api/articles", (request, response) => {
   // Return all Articles as an Array
