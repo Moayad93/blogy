@@ -25,7 +25,7 @@ const
 
 // Define a PORT for the API to run on. Use NodeJS environment
 const
-  port = process.env.PORT || 5000;
+  port = process.env.PORT || 5050;
 
 /****************************
  * Routes                   *
