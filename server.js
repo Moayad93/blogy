@@ -8,7 +8,17 @@ const
 
 // Require Route Files
 const
-  indexRoute = require("./app/routes/index");
+  indexRouter    = require("./app/routes/index"),
+
+// Require DB Configuration File
+const
+  db = require("./config/db");
+
+// Establish Database Connection
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connection.once("open", () => {
+  console.log("Connected to Mongo");
+});
 
 // Instantiate Express Application Object
 const
@@ -23,8 +33,8 @@ const
  * (Mount imported Routers) *
  ****************************/
 
-// Mount indexRoute on the app
-app.use(indexRoute);
+// Mount indexRouter on the app
+app.use(indexRouter);
 
 // Start the server to listen for requests on a given port
 app.listen(port, () => {
