@@ -29,6 +29,14 @@ const
 const
   port = process.env.PORT || 5050;
 
+/*************************************************************
+ * Middleware                                                *
+ * (Add 'bodyParser' middleware which will parse             *
+ * JSON requests into JS objects they reach the route files) *
+ *************************************************************/
+// The method '.use' sets up middleware for the Express application
+app.use(express.json());
+
 /****************************
  * Routes                   *
  * (Mount imported Routers) *
