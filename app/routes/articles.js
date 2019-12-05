@@ -5,16 +5,34 @@
 const
   express = require("express");
 
+// Require Mongoose Model for Article
+const
+  Article = require("../models/article");
+
 // Instantiate a Router (mini app that only handles routes)
 const
   router = express.Router();
 
-/*********************************
- * Action     : INDEX            *
- * Method     : GET              *
- * URI        : /api/articles    *
- * Description: Get All Articles *
- *********************************/
+// /*********************************
+//  * Action     : INDEX            *
+//  * Method     : GET              *
+//  * URI        : /api/articles    *
+//  * Description: Get All Articles *
+//  *********************************/
+// router.get("/api/articles", (request, response) => {
+//   response.status(200).json({ message: "Get All Articles" })
+// })
+router.get("/api/articles", (request, response) => {
+  // Return all Articles as an Array
+  Article.find()
+    .then(articles => {
+      response.status(200).json({ message: "Get All Articles" });
+    })
+    // Catch any errors that might occur
+    .catch(error => {
+      response.status(500).json({ error: error });
+    });
+});
 
 /********************************************************
  * Action     : SHOW                                    *

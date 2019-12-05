@@ -9,6 +9,7 @@ const
 // Require Route Files
 const
   indexRouter    = require("./app/routes/index"),
+  articlesRouter = require("./app/routes/articles");
 
 // Require DB Configuration File
 const
@@ -35,6 +36,7 @@ const
 
 // Mount indexRouter on the app
 app.use(indexRouter);
+app.use(articlesRouter);
 
 // Start the server to listen for requests on a given port
 app.listen(port, () => {
