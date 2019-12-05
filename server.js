@@ -1,6 +1,6 @@
 // Require necessary NPM Packages
 const
-  express = require("express"),
+  express  = require("express"),
   mongoose = require("mongoose");
 
 // Instantiate Express Application Object

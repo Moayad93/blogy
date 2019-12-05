@@ -1,0 +1,19 @@
+/****************************************************************
+ * #	Action 	URL      	 HTTP Verb	mongoose method             *
+ * 1	Index  	/logs    	 GET      	Log.find({})                *
+ * 2	Show   	/logs/:id	 GET      	Log.findById(req.params.id) *
+ * 3	Create 	/logs    	 POST     	Log.create(req.body)        *
+ * 4	Update 	/logs/:id	 PUT      	Log.findByIdAndUpdate()     *
+ * 5	Destroy	/logs    	 DELETE   	Log.findByIdAndRemove()     *
+ ****************************************************************/
+
+/****************************
+ * Set up and Configuration *
+ ****************************/
+
+/*****************************
+ * Action     : INDEX        *
+ * Method     : GET          *
+ * URI        : /logs        *
+ * Description: Get all logs *
+ *****************************/
