@@ -19,14 +19,16 @@ const
 //  * URI        : /api/articles    *
 //  * Description: Get All Articles *
 //  *********************************/
+
 // router.get("/api/articles", (request, response) => {
 //   response.status(200).json({ message: "Get All Articles" })
 // })
+
 router.get("/api/articles", (request, response) => {
   // Return all Articles as an Array
   Article.find()
     .then(articles => {
-      response.status(200).json({ message: "Get All Articles" });
+      response.status(200).json({ articles: articles });
     })
     // Catch any errors that might occur
     .catch(error => {
