@@ -41,7 +41,6 @@ app.use(express.json());
  * Routes                   *
  * (Mount imported Routers) *
  ****************************/
-
 // Mount indexRouter on the app
 app.use(indexRouter);
 app.use(articlesRouter);
