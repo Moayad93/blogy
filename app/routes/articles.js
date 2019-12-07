@@ -253,5 +253,46 @@ router.get("/api/articles/:articleId/comments/:commentId", (request, response) =
     });
 });
 
+/************************************************************************
+ * Action     : CREATE                                                  *
+ * Method     : POST                                                    *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments        *
+ * Description: Create a new Comment for an Article                     *
+ ************************************************************************/
+router.post("/api/articles/:id/comments", (request, response) => {
+  const
+    articleId  = request.params.id,
+    comment    = request.body.comment,
+    newComment = new Comment({ text: comment.text });
+
+  Article.findById(articleId)
+    // On a successful "create" action, respond with 201
+    // HTTP status and the content of the new comment
+    .then(article => {
+      if (article) {
+        article.comments.push(newComment);
+        // ".markModified" might not be needed
+        article.markModified("comments");
+        return article.save();
+      } else {
+        // If we could not find a document with the matching ID
+        response.status(404).json({
+          error: {
+            name   : "DocumentNotFoundError",
+            message: "The provided ID doesn't match any documents"
+          }
+        });
+      }
+    })
+    // If the creation succeeded, return 200 and no JSON
+    .then(() => {
+      response.status(200).end();
+    })
+    // Catch any Errors that might occur
+    .catch(error => {
+      response.status(500).json({ error: error });
+    });
+});
+
 // Export the Router so we can use it in the server.js file
 module.exports = router;
