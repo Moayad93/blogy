@@ -5,22 +5,14 @@
 const
   express = require("express");
 
-// Require Mongoose Model for Article
+// Require Mongoose Models for Article and Comment
 const
-  Article = require("../models/article");
+  Article = require("../models/article").Article,
+  Comment = require("../models/article").Comment;
 
 // Instantiate a Router (mini app that only handles routes)
 const
   router = express.Router();
-
-/****************************************************************
- * #	Action 	URL      	 HTTP Verb	mongoose method             *
- * 1	Index  	/xxxx    	 GET      	Xxx.find({})                *
- * 2	Show   	/xxxx/:id	 GET      	Xxx.findById(req.params.id) *
- * 3	Create 	/xxxx    	 POST     	Xxx.create(req.body)        *
- * 4	Update 	/xxxx/:id	 PUT      	Xxx.findByIdAndUpdate()     *
- * 5	Destroy	/xxxx    	 DELETE   	Xxx.findByIdAndRemove()     *
- ****************************************************************/
 
 /*********************************
  * Action     : INDEX            *
@@ -48,13 +40,13 @@ router.get("/api/articles", (request, response) => {
  ********************************************************/
 router.get("/api/articles/:id", (request, response) => {
   const
-    articleID  = request.params.id;
+    articleId = request.params.id;
 
-  Article.findById(articleID)
+  Article.findById(articleId)
     .then(article => {
       if (article) {
-        // XXXXXXXX Pass the result of Mongoose's ".delete" method to the next ".then"
-        // promise returned from findOneAndUpdate() is returned to the next then()
+        // Pass the result of Mongoose's ".get" method to the next ".then"
+        // Promise returned from response.json() is returned to the next ".then"
         return response.json({ article });
       } else {
         // If we could not find a document with the matching ID
@@ -66,7 +58,7 @@ router.get("/api/articles/:id", (request, response) => {
         });
       }
     })
-    // If the show succeeded, return 202 and no JSON
+    // If the showing succeeded, return 202 and no JSON
     .then(() => {
       response.status(201).end();
     })
@@ -96,7 +88,7 @@ router.post("/api/articles", (request, response) => {
     .catch(error => {
       response.status(500).json({ error: error });
     });
-})
+});
 
 /********************************************************
  * Action     : UPDATE                                  *
@@ -106,14 +98,14 @@ router.post("/api/articles", (request, response) => {
  ********************************************************/
 router.patch("/api/articles/:id", (request, response) => {
   const
-    articleID  = request.params.id,
+    articleId  = request.params.id,
     newArticle = request.body.article;
 
-  Article.findById(articleID)
+  Article.findById(articleId)
     .then(article => {
       if (article) {
-        // XXXXXXXX Pass the result of Mongoose's ".delete" method to the next ".then"
-        // promise returned from findOneAndUpdate() is returned to the next then()
+        // Pass the result of Mongoose's ".patch" method to the next ".then"
+        // Promise returned from updateOn() is returned to the next ".then"
         return article.updateOne({article: newArticle});
       } else {
         // If we could not find a document with the matching ID
@@ -125,9 +117,9 @@ router.patch("/api/articles/:id", (request, response) => {
         });
       }
     })
-    // If the updating succeeded, return 202 and no JSON
+    // If the updating succeeded, return 204 and no JSON
     .then(() => {
-      response.status(202).end();
+      response.status(204).end();
     })
     // Catch any errors that might occur
     .catch(error => {
@@ -143,12 +135,13 @@ router.patch("/api/articles/:id", (request, response) => {
  ********************************************************/
 router.delete("/api/articles/:id", (request, response) => {
   const
-    articleID = request.params.id;
+    articleId = request.params.id;
 
-  Article.findById(articleID)
+  Article.findById(articleId)
     .then(article => {
       if (article) {
         // Pass the result of Mongoose's ".delete" method to the next ".then"
+        // Promise returned from remove() is returned to the next ".then"
         return article.remove();
       } else {
         // If we could not find a document with the matching ID
@@ -162,7 +155,47 @@ router.delete("/api/articles/:id", (request, response) => {
     })
     // If the deletion succeeded, return 204 and no JSON
     .then(() => {
+      //
       response.status(204).end();
+    })
+    // Catch any errors that might occur
+    .catch(error => {
+      response.status(500).json({ error: error });
+    });
+});
+
+/***********************************************************************************
+ * Action     : INDEX                                                              *
+ * Method     : GET                                                                *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments                   *
+ * Description: Get All Comments for an Article                                    *
+ ***********************************************************************************/
+router.get("/api/articles/:id/comments", (request, response) => {
+  const
+    articleId = request.params.id;
+
+    Article.findById(articleId)
+    .then(article => {
+      if (article) {
+        // Pass the result of Mongoose's ".get" method to the next ".then"
+        // Promise returned from response.json() is returned to the next ".then"
+        const
+          allComments  = response.json({ comments: article.comments });
+
+        return allComments;
+      } else {
+        // If we could not find a document with the matching ID
+        response.status(404).json({
+          error: {
+            name   : "DocumentNotFoundError",
+            message: "The provided ID doesn't match any documents"
+          }
+        });
+      }
+    })
+    // If the showing succeeded, return 200 and no JSON
+    .then(() => {
+      response.status(200).end();
     })
     // Catch any errors that might occur
     .catch(error => {
