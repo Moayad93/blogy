@@ -295,6 +295,50 @@ router.post("/api/articles/:articleId/comments", (request, response) => {
 });
 
 /**********************************************************************************************
+ * Action     : UPDATE                                                                        *
+ * Method     : PATCH                                                                         *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r    *
+ * Description: Update a Comment from an Article by Comment ID and Article ID                 *
+ **********************************************************************************************/
+router.patch("/api/articles/:articleId/comments/:commentId", (request, response) => {
+  const
+    articleId  = request.params.articleId,
+    commentId  = request.params.commentId,
+    newComment = request.body.comment;
+
+  Article.findById(articleId)
+    .then(article => {
+      if (article) {
+        // Pass the result of Mongoose's ".patch" method to the next ".then"
+        // Promise returned from updateOn() is returned to the next ".then"
+        const
+          currentComment = article.comments.id(commentId);
+
+        currentComment.text = newComment.text;
+         // ".markModified" might not be needed
+        article.markModified("comments");
+        return article.save();
+      } else {
+        // If we could not find a document with the matching ID
+        response.status(404).json({
+          error: {
+            name   : "DocumentNotFoundError",
+            message: "The provided ID doesn't match any documents"
+          }
+        });
+      }
+    })
+    // If the updating succeeded, return 204 and no JSON
+    .then(() => {
+      response.status(204).end();
+    })
+    // Catch any errors that might occur
+    .catch(error => {
+      response.status(500).json({ error: error });
+    });
+});
+
+/**********************************************************************************************
  * Action     : DESTROY                                                                       *
  * Method     : DELETE                                                                        *
  * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r    *
@@ -308,8 +352,6 @@ router.delete("/api/articles/:articleId/comments/:commentId", (request, response
   Article.findById(articleId)
     .then(article => {
       if (article) {
-        console.log(article.comments.id(commentId));
-
         // Pass the result of Mongoose's ".delete" method to the next ".then"
         // Promise returned from remove() is returned to the next ".then"
         article.comments.id(commentId).remove();
