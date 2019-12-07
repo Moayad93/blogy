@@ -6,7 +6,18 @@ const
   mongoose = require("mongoose"),
   Schema   = mongoose.Schema;
 
-// Define Article Schema
+// Define Comment Schema (Embedded Document/Record)
+const
+  commentSchema = new Schema(
+    {
+      text: String
+    },
+    {
+      timestamps: true
+    }
+  );
+
+// Define Article Schema (Parent Document/Record)
 const
   articleSchema = new Schema(
     {
@@ -14,16 +25,18 @@ const
       content    : String,
       author     : { type: String, required: true },
       published  : { type: Boolean, default: true },
-      publishedOn: { type: Date, default: Date.now }
+      publishedOn: { type: Date, default: Date.now },
+      comments   : [commentSchema]
     },
     {
       timestamps: true
     }
   );
 
-// Compile our Model based on the Schema
+// Compile our Models based on the Schema
 const
-  Article = mongoose.model("Article", articleSchema);
+  Article = mongoose.model("Article", articleSchema),
+  Comment = mongoose.model("Comment", commentSchema);
 
 // Export our Model for use
-module.exports = Article
+module.exports = { Article, Comment };
