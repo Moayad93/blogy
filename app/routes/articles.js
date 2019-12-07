@@ -294,12 +294,12 @@ router.post("/api/articles/:articleId/comments", (request, response) => {
     });
 });
 
-/*******************************************************************************************
+/**********************************************************************************************
  * Action     : DESTROY                                                                       *
  * Method     : DELETE                                                                        *
- * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r    *
  * Description: Delete a Comment from an Article by Comment ID and Article ID                 *
- *******************************************************************************************/
+ **********************************************************************************************/
 router.delete("/api/articles/:articleId/comments/:commentId", (request, response) => {
   const
     articleId = request.params.articleId,
