@@ -14,6 +14,11 @@ const
 const
   router = express.Router();
 
+
+/*────────────────*
+ * Article Routes *
+ *────────────────*/
+
 /*********************************
  * Action     : INDEX            *
  * Method     : GET              *
@@ -164,12 +169,17 @@ router.delete("/api/articles/:id", (request, response) => {
     });
 });
 
-/***********************************************************************************
- * Action     : INDEX                                                              *
- * Method     : GET                                                                *
- * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments                   *
- * Description: Get All Comments for an Article                                    *
- ***********************************************************************************/
+
+/*────────────────*
+ * Comment Routes *
+ *────────────────*/
+
+/*****************************************************************
+ * Action     : INDEX                                            *
+ * Method     : GET                                              *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments *
+ * Description: Get All Comments for an Article                  *
+ *****************************************************************/
 router.get("/api/articles/:id/comments", (request, response) => {
   const
     articleId = request.params.id;
@@ -180,9 +190,49 @@ router.get("/api/articles/:id/comments", (request, response) => {
         // Pass the result of Mongoose's ".get" method to the next ".then"
         // Promise returned from response.json() is returned to the next ".then"
         const
-          allComments  = response.json({ comments: article.comments });
+          comments = response.json({ comments: article.comments });
 
-        return allComments;
+        return comments;
+      } else {
+        // If we could not find a document with the matching ID
+        response.status(404).json({
+          error: {
+            name   : "DocumentNotFoundError",
+            message: "The provided ID doesn't match any documents"
+          }
+        });
+      }
+    })
+    // If the showing succeeded, return 200 and no JSON
+    .then(() => {
+      response.status(200).end();
+    })
+    // Catch any errors that might occur
+    .catch(error => {
+      response.status(500).json({ error: error });
+    });
+});
+
+/*******************************************************************************************
+ * Action     : SHOW                                                                       *
+ * Method     : GET                                                                        *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r *
+ * Description: Get a Comment for an Article by Comment ID and Article ID                  *
+ *******************************************************************************************/
+router.get("/api/articles/:articleId/comments/:commentId", (request, response) => {
+  const
+    articleId = request.params.id,
+    commentId = request.params.id;
+
+    Article.findById(articleId)
+    .then(article => {
+      if (article) {
+        // Pass the result of Mongoose's ".get" method to the next ".then"
+        // Promise returned from response.json() is returned to the next ".then"
+        const
+          comment = response.json({ comment: article.comments.id(commentId) });
+
+        return comment;
       } else {
         // If we could not find a document with the matching ID
         response.status(404).json({
