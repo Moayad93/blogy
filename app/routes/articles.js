@@ -43,9 +43,9 @@ router.get("/api/articles", (request, response) => {
  * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r *
  * Description: Get an Article by Article ID            *
  ********************************************************/
-router.get("/api/articles/:id", (request, response) => {
+router.get("/api/articles/:articleId", (request, response) => {
   const
-    articleId = request.params.id;
+    articleId = request.params.articleId;
 
   Article.findById(articleId)
     .then(article => {
@@ -101,9 +101,9 @@ router.post("/api/articles", (request, response) => {
  * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r *
  * Description: Update an Article by Article ID         *
  ********************************************************/
-router.patch("/api/articles/:id", (request, response) => {
+router.patch("/api/articles/:articleId", (request, response) => {
   const
-    articleId  = request.params.id,
+    articleId  = request.params.articleId,
     newArticle = request.body.article;
 
   Article.findById(articleId)
@@ -138,9 +138,9 @@ router.patch("/api/articles/:id", (request, response) => {
  * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r *
  * Description: Delete an Article by Article ID         *
  ********************************************************/
-router.delete("/api/articles/:id", (request, response) => {
+router.delete("/api/articles/:articleId", (request, response) => {
   const
-    articleId = request.params.id;
+    articleId = request.params.articleId;
 
   Article.findById(articleId)
     .then(article => {
@@ -180,9 +180,9 @@ router.delete("/api/articles/:id", (request, response) => {
  * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments *
  * Description: Get All Comments for an Article                  *
  *****************************************************************/
-router.get("/api/articles/:id/comments", (request, response) => {
+router.get("/api/articles/:articleId/comments", (request, response) => {
   const
-    articleId = request.params.id;
+    articleId = request.params.articleId;
 
     Article.findById(articleId)
     .then(article => {
@@ -217,12 +217,12 @@ router.get("/api/articles/:id/comments", (request, response) => {
  * Action     : SHOW                                                                       *
  * Method     : GET                                                                        *
  * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r *
- * Description: Get a Comment for an Article by Comment ID and Article ID                  *
+ * Description: Get a Comment from an Article by Comment ID and Article ID                 *
  *******************************************************************************************/
 router.get("/api/articles/:articleId/comments/:commentId", (request, response) => {
   const
-    articleId = request.params.id,
-    commentId = request.params.id;
+    articleId = request.params.articleId,
+    commentId = request.params.commentId;
 
     Article.findById(articleId)
     .then(article => {
@@ -259,9 +259,9 @@ router.get("/api/articles/:articleId/comments/:commentId", (request, response) =
  * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments        *
  * Description: Create a new Comment for an Article                     *
  ************************************************************************/
-router.post("/api/articles/:id/comments", (request, response) => {
+router.post("/api/articles/:articleId/comments", (request, response) => {
   const
-    articleId  = request.params.id,
+    articleId  = request.params.articleId,
     comment    = request.body.comment,
     newComment = new Comment({ text: comment.text });
 
@@ -289,6 +289,49 @@ router.post("/api/articles/:id/comments", (request, response) => {
       response.status(200).end();
     })
     // Catch any Errors that might occur
+    .catch(error => {
+      response.status(500).json({ error: error });
+    });
+});
+
+/*******************************************************************************************
+ * Action     : DESTROY                                                                       *
+ * Method     : DELETE                                                                        *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r *
+ * Description: Delete a Comment from an Article by Comment ID and Article ID                 *
+ *******************************************************************************************/
+router.delete("/api/articles/:articleId/comments/:commentId", (request, response) => {
+  const
+    articleId = request.params.articleId,
+    commentId = request.params.commentId;
+
+  Article.findById(articleId)
+    .then(article => {
+      if (article) {
+        console.log(article.comments.id(commentId));
+
+        // Pass the result of Mongoose's ".delete" method to the next ".then"
+        // Promise returned from remove() is returned to the next ".then"
+        article.comments.id(commentId).remove();
+        // ".markModified" might not be needed
+        article.markModified("comments");
+        return article.save();
+      } else {
+        // If we could not find a document with the matching ID
+        response.status(404).json({
+          error: {
+            name   : "DocumentNotFoundError",
+            message: "The provided ID doesn't match any documents"
+          }
+        });
+      }
+    })
+    // If the deletion succeeded, return 204 and no JSON
+    .then(() => {
+      //
+      response.status(204).end();
+    })
+    // Catch any errors that might occur
     .catch(error => {
       response.status(500).json({ error: error });
     });
