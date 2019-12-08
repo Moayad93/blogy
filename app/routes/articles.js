@@ -253,12 +253,12 @@ router.get("/api/articles/:articleId/comments/:commentId", (request, response) =
     });
 });
 
-/************************************************************************
- * Action     : CREATE                                                  *
- * Method     : POST                                                    *
- * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments        *
- * Description: Create a new Comment for an Article                     *
- ************************************************************************/
+/*****************************************************************
+ * Action     : CREATE                                           *
+ * Method     : POST                                             *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments *
+ * Description: Create a new Comment for an Article              *
+ *****************************************************************/
 router.post("/api/articles/:articleId/comments", (request, response) => {
   const
     articleId  = request.params.articleId,
@@ -294,12 +294,12 @@ router.post("/api/articles/:articleId/comments", (request, response) => {
     });
 });
 
-/**********************************************************************************************
- * Action     : UPDATE                                                                        *
- * Method     : PATCH                                                                         *
- * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r    *
- * Description: Update a Comment from an Article by Comment ID and Article ID                 *
- **********************************************************************************************/
+/*******************************************************************************************
+ * Action     : UPDATE                                                                     *
+ * Method     : PATCH                                                                      *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r *
+ * Description: Update a Comment from an Article by Comment ID and Article ID              *
+ *******************************************************************************************/
 router.patch("/api/articles/:articleId/comments/:commentId", (request, response) => {
   const
     articleId  = request.params.articleId,
@@ -338,12 +338,12 @@ router.patch("/api/articles/:articleId/comments/:commentId", (request, response)
     });
 });
 
-/**********************************************************************************************
- * Action     : DESTROY                                                                       *
- * Method     : DELETE                                                                        *
- * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r    *
- * Description: Delete a Comment from an Article by Comment ID and Article ID                 *
- **********************************************************************************************/
+/*******************************************************************************************
+ * Action     : DESTROY                                                                    *
+ * Method     : DELETE                                                                     *
+ * URI        : /api/articles/66ftr54t8fu4rr78sww9r334r/comments/22ftr54t8mu4xx78sww9r774r *
+ * Description: Delete a Comment from an Article by Comment ID and Article ID              *
+ *******************************************************************************************/
 router.delete("/api/articles/:articleId/comments/:commentId", (request, response) => {
   const
     articleId = request.params.articleId,
