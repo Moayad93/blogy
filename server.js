@@ -4,7 +4,8 @@
 // Require necessary NPM Packages
 const
   express  = require("express"),
-  mongoose = require("mongoose");
+  mongoose = require("mongoose"),
+  cors     = require("cors");
 
 // Require Route Files
 const
@@ -25,17 +26,22 @@ mongoose.connection.once("open", () => {
 const
   app = express();
 
-// Define a PORT for the API to run on. Use NodeJS environment
+// Define a PORT for the API to run on. Use NodeJS environment & Define a PORT number for the React App
 const
-  port = process.env.PORT || 5050;
+  port      = process.env.PORT || 5050,
+  reactPort = 3000;
 
-/*************************************************************
- * Middleware                                                *
- * (Add 'bodyParser' middleware which will parse             *
- * JSON requests into JS objects they reach the route files) *
- *************************************************************/
-// The method '.use' sets up middleware for the Express application
+/********************************************************************
+ * Middleware                                                       *
+ * The method '.use' sets up middleware for the Express application *
+ ********************************************************************/
+// Add 'bodyParser' middleware which will parse JSON requests into JS objects they reach the route files
 app.use(express.json());
+
+// Set CORS headers on response from this API using the "cors" NPM package
+app.use(
+  cors({ origin: process.env.CLIENT_ORIGIN || `http:/localhost:${reactPort}` })
+);
 
 /****************************
  * Routes                   *
